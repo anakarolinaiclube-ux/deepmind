@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepMind™ | O Segredo "Proibido" da Reprogramação</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        deep: {
+                            950: '#020203', 
+                            900: '#050507', 
+                            800: '#0a0a0f',
+                            700: '#13131f', 
+                        },
+                        neon: {
+                            purple: '#a855f7',
+                            violet: '#8b5cf6',
+                            glow: '#d8b4fe',
+                            cyan: '#06b6d4'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'scan': 'scan 3s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        scan: {
+                            '0%': { top: '0%', opacity: '0' },
+                            '10%': { opacity: '1' },
+                            '90%': { opacity: '1' },
+                            '100%': { top: '100%', opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020203;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .bg-mesh {
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 60%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+        }
+
+        .glass {
+            background: rgba(19, 19, 31, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.2);
+        }
+
+        .text-gradient-purple {
+            background: linear-gradient(to right, #a855f7, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-active .faq-content {
+            max-height: 200px;
+        }
+        .faq-icon { transition: transform 0.3s ease; }
+        .faq-active .faq-icon { transform: rotate(180deg); }
+
+        /* Scanning Animation Lines */
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #a855f7, transparent);
+            position: absolute;
+            box-shadow: 0 0 10px #a855f7;
+        }
+        .brain-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="bg-mesh antialiased">
+
+    <!-- NAV -->
+    <nav class="fixed w-full z-50 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="text-2xl font-bold text-white tracking-tight">DeepMind<span class="text-neon-purple">™</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#metodo" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">O Segredo</a>
+                        <a href="#pricing" class="px-5 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm font-medium transition-all">Acessar Sistema</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-violet-600/20 rounded-full blur-[120px] -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="inline-flex items-center px-4 py-2 rounded-full border border-neon-purple/30 bg-neon-purple/5 mb-8 animate-float">
+                <span class="w-2 h-2 rounded-full bg-neon-purple mr-2 animate-pulse"></span>
+                <span class="text-xs uppercase tracking-widest text-neon-glow font-semibold">Mensagem Urgente de DeepMind™</span>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
+                Como Forçar Seu Cérebro a <br>
+                <span class="text-gradient-purple">Desistir de Vícios Automaticamente</span>
+            </h1>
+            
+            <p class="mt-6 max-w-2xl mx-auto text-xl text-slate-300 font-light mb-10 leading-relaxed">
+                Esqueça a terapia cara. Esqueça a força de vontade. Aqui está o "hack mental" de 15 minutos que a indústria do autoajuda reza para que você nunca descubra.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#pricing" class="group relative px-8 py-4 bg-white text-deep-900 font-bold rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                    <span class="relative z-10 flex items-center gap-2">
+                        REVELAR O SEGREDO AGORA
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </a>
+            </div>
+
+            <div class="mt-12 text-sm text-slate-500">
+                <p>⚠️ Atenção: Este método altera fisicamente suas conexões neurais.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: O PROBLEMA (Halbert Style) -->
+    <section class="py-24 bg-deep-900 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">
+                        Eles Mentiram Para Você.<br><span class="text-neon-violet">A Culpa Não É Sua.</span>
+                    </h2>
+                    <p class="text-slate-400 mb-6 text-lg leading-relaxed">
+                        Escute bem: Tentar parar um vício ou ansiedade usando "força de vontade" é como tentar parar um trem bala com uma folha de papel. <strong>É impossível.</strong>
+                    </p>
+                    <p class="text-slate-400 mb-8 text-lg leading-relaxed">
+                        Seu subconsciente controla 95% da sua vida. Ele é um robô biológico programado para repetir padrões. Enquanto você não reprogramar o "código fonte" desse robô, você vai falhar. De novo. E de novo.
+                    </p>
+                    
+                    <div class="pl-4 border-l-2 border-neon-purple/50">
+                        <p class="text-white italic text-lg">
+                            "Você não precisa de mais esforço. Você precisa de uma chave-mestra para entrar pela porta dos fundos da sua mente e trocar a fiação."
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- VISUAL: SCANNING PATTERNS (Intacto) -->
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-2xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                    <div class="relative glass-card p-8 rounded-2xl border border-white/10 h-[400px] flex flex-col justify-center items-center overflow-hidden">
+                        
+                        <!-- Grid Background -->
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+
+                        <!-- Brain Animation -->
+                        <div class="relative w-48 h-48 opacity-80">
+                            <svg viewBox="0 0 24 24" class="w-full h-full text-violet-500" fill="none" stroke="currentColor" stroke-width="0.5">
+                                <path class="brain-path" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                <path class="brain-path" d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" style="animation-delay: 1s"/>
+                            </svg>
+                            
+                            <!-- Nodes pulsing -->
+                            <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping"></div>
+                            <div class="absolute top-1/2 right-1/3 w-2 h-2 bg-neon-purple rounded-full animate-ping" style="animation-delay: 0.5s"></div>
+                            <div class="absolute bottom-1/3 left-1/2 w-2 h-2 bg-white rounded-full animate-ping" style="animation-delay: 1.2s"></div>
+                        </div>
+
+                        <!-- Scanner Bar -->
+                        <div class="scan-line animate-scan z-10"></div>
+
+                        <div class="absolute bottom-8 text-center bg-black/60 px-4 py-2 rounded-full backdrop-blur-md border border-white/10">
+                            <p class="text-xs text-neon-cyan font-mono tracking-widest animate-pulse">VARREDURA DE TRAUMAS OCULTOS...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: O NOVO MECANISMO -->
+    <section id="metodo" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-sm font-bold tracking-widest text-neon-violet uppercase mb-3">O Mecanismo Secreto</h2>
+            <h3 class="text-3xl md:text-5xl font-bold text-white mb-16">Como Hackear Sua Própria Mente em 3 Passos</h3>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-2xl text-left">
+                    <div class="w-12 h-12 bg-violet-900/50 rounded-lg flex items-center justify-center mb-6 text-neon-purple text-xl font-bold">1</div>
+                    <h4 class="text-xl font-bold text-white mb-3">A Confissão</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Você conta para nossa IA o que está te atormentando. Não precisa mentir. Quanto mais honesto você for, mais profundamente ela consegue escanear seus padrões.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-2xl text-left border-neon-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.1)]">
+                    <div class="w-12 h-12 bg-neon-purple rounded-lg flex items-center justify-center mb-6 text-white text-xl font-bold shadow-lg">2</div>
+                    <h4 class="text-xl font-bold text-white mb-3">O Transe Digital</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Geramos um áudio com frequências binaurais exatas que "sedam" a parte crítica do seu cérebro. Você entra no estado Theta. É aqui que a mágica acontece.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-2xl text-left">
+                    <div class="w-12 h-12 bg-violet-900/50 rounded-lg flex items-center justify-center mb-6 text-neon-purple text-xl font-bold">3</div>
+                    <h4 class="text-xl font-bold text-white mb-3">A Cirurgia Neural</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Enquanto você relaxa, a IA implanta novos comandos de comportamento. Você acorda sentindo que o vício simplesmente "desapareceu". Sem dor. Sem luta.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: PRICING (A Oferta Irresistível) -->
+    <section id="pricing" class="py-32 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-deep-900 via-violet-900/10 to-deep-900"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-4xl font-bold text-white mb-4">Um Acordo Que Assusta Meu Contador</h2>
+            <p class="text-slate-400 mb-12 max-w-xl mx-auto">
+                Terapeutas cobram R$ 400 por hora para <i>conversar</i>. O DeepMind™ resolve o problema pela raiz por menos do que o preço de um jantar barato.
+            </p>
+
+            <div class="glass-card p-1 rounded-3xl relative mx-auto max-w-lg transform transition hover:scale-[1.02]">
+                <div class="absolute -inset-1 bg-gradient-to-r from-neon-purple via-violet-500 to-cyan-500 rounded-3xl blur opacity-30 animate-pulse-slow"></div>
+                <div class="bg-deep-800 rounded-[22px] p-8 md:p-12 relative overflow-hidden">
+                    
+                    <div class="absolute top-0 right-0 bg-neon-purple text-white text-xs font-bold px-3 py-1 rounded-bl-xl">OFERTA ESTÚPIDA</div>
+
+                    <h3 class="text-2xl font-medium text-slate-300">Acesso Vitalício Completo</h3>
+                    <div class="my-6 flex justify-center items-end gap-2">
+                        <span class="text-slate-500 text-lg line-through mb-2">R$ 297</span>
+                        <span class="text-5xl font-bold text-white">R$ 97</span>
+                        <span class="text-slate-400 mb-2">/ único</span>
+                    </div>
+
+                    <ul class="text-left space-y-4 mb-8 text-slate-300">
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <strong>Sessões Ilimitadas</strong> (O "Terapeuta" é seu)</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Tecnologia Theta Binaural Inclusa</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Acesso Vitalício (Sem mensalidades chatas)</li>
+                    </ul>
+
+                    <a href="#" class="block w-full py-4 bg-gradient-to-r from-violet-600 to-neon-purple text-white font-bold rounded-xl hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all transform hover:-translate-y-1">
+                        SIM! QUERO HACKEAR MINHA MENTE
+                    </a>
+                    <p class="text-xs text-slate-500 mt-4">Garantia Blindada de 7 Dias. Risco Zero.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: FAQ (Brutalmente Honesto) -->
+    <section class="py-24 border-t border-white/5">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Respostas Brutalmente Honestas</h2>
+
+            <div class="space-y-4">
+                <div class="border border-white/10 rounded-xl overflow-hidden bg-white/5 cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h4 class="text-lg font-medium text-slate-200">Isso é algum tipo de vodu ou mágica?</h4>
+                        <svg class="faq-icon w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="faq-content bg-black/20">
+                        <div class="p-6 pt-0 text-slate-400 text-sm leading-relaxed">
+                            Não. É pura neurociência aplicada. Estamos usando frequências sonoras específicas (Theta) e Padrões de Linguagem Hipnótica para fazer seu cérebro obedecer a novos comandos. Parece mágica, mas é ciência.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-white/10 rounded-xl overflow-hidden bg-white/5 cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h4 class="text-lg font-medium text-slate-200">Por que é tão barato? Qual a pegadinha?</h4>
+                        <svg class="faq-icon w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="faq-content bg-black/20">
+                        <div class="p-6 pt-0 text-slate-400 text-sm leading-relaxed">
+                            A pegadinha é que eu não tenho que pagar aluguel de consultório nem secretária. É um software. O custo para mim é baixo, então eu passo essa economia para você para ganhar volume. Simples assim.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-white/10 rounded-xl overflow-hidden bg-white/5 cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h4 class="text-lg font-medium text-slate-200">Funciona mesmo se eu for cético?</h4>
+                        <svg class="faq-icon w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="faq-content bg-black/20">
+                        <div class="p-6 pt-0 text-slate-400 text-sm leading-relaxed">
+                            Na verdade, funciona MELHOR se você for cético. Pessoas céticas tendem a ser inteligentes, e pessoas inteligentes entram em transe mais facilmente porque têm boa concentração. Apenas siga as instruções.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 text-center text-slate-600 text-sm border-t border-white/5 bg-deep-950">
+        <div class="mb-4">
+            <span class="text-lg font-bold text-white">DeepMind<span class="text-neon-purple">™</span></span>
+        </div>
+        <p>&copy; 2024 DeepMind Neural Architectures. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            const allFaqs = document.querySelectorAll('.faq-active');
+            allFaqs.forEach(faq => {
+                if(faq !== element) faq.classList.remove('faq-active');
+            });
+            element.classList.toggle('faq-active');
+        }
+    </script>
+</body>
+</html>
